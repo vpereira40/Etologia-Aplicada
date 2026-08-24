@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ontogenia de la conducta | Perros y gatos</title>
+<style>
+:root{
+  --petrol:#123f4b; --petrol2:#1f6070; --mustard:#e1ae38; --mustard2:#f1c75b;
+  --sky:#eaf4f6; --sand:#fff8ea; --ink:#183038; --muted:#63777c; --line:#d8e4e6;
+  --dog:#2c7a88; --cat:#c79227; --card:#ffffff; --bg:#f6faf9;
+  --good:#2f7d4d; --bad:#a64c3d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}
+.hero{position:relative;overflow:hidden;background:linear-gradient(130deg,var(--petrol),#215a65);color:white;padding:34px clamp(18px,5vw,62px) 38px}
+.hero:after{content:"";position:absolute;width:330px;height:330px;border-radius:50%;border:65px solid rgba(225,174,56,.12);right:-95px;top:-140px}
+.brand{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+.brandmark{width:64px;height:64px;border-radius:20px;background:#fff5d8;color:var(--petrol);display:grid;place-items:center;font-size:30px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.brand small{display:block;text-transform:uppercase;letter-spacing:.14em;opacity:.75;font-weight:800;font-size:10px}
+.brand b{font-family:Georgia,serif;font-size:19px}
+h1{position:relative;z-index:1;font-family:Inter,Segoe UI,Arial,sans-serif;font-weight:800;font-size:clamp(34px,5vw,54px);line-height:1.03;max-width:850px;margin:24px 0 12px}
+.hero p{position:relative;z-index:1;max-width:830px;font-size:15px;line-height:1.58;opacity:.9}
+.specieskeys{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:1}
+.key{padding:7px 11px;border:1px solid rgba(255,255,255,.25);border-radius:999px;font-size:12px;font-weight:800;background:rgba(255,255,255,.08)}
+.wrap{max-width:1220px;margin:auto;padding:24px 18px 56px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:20;padding:10px 0;background:rgba(246,250,249,.95);backdrop-filter:blur(7px)}
+.nav a{text-decoration:none;color:var(--petrol);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800}
+h2{font-family:Inter,Segoe UI,Arial,sans-serif;font-size:28px;font-weight:800;margin:34px 0 8px}
+.lead{color:var(--muted);line-height:1.55;max-width:920px;margin:0 0 18px}
+
+/* SENTIDOS */
+.sense-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.sense-tab{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 10px;cursor:pointer;text-align:center;transition:.2s}
+.sense-tab:hover,.sense-tab.active{transform:translateY(-2px);border-color:var(--mustard);box-shadow:0 8px 18px rgba(18,63,75,.08)}
+.sense-tab.active{background:#fff7dc;outline:2px solid rgba(225,174,56,.18)}
+.sense-tab .ico{display:flex;align-items:center;justify-content:center;height:34px;margin-bottom:5px}
+.sense-tab .ico svg{width:32px;height:32px;display:block}
+.sense-tab .ico.emoji{font-size:26px}
+.sense-tab b{font-size:13px}
+.sense-panel{margin-top:12px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--mustard);border-radius:14px;padding:16px}
+.sense-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sense-species{padding:13px;border-radius:12px}
+.sense-species.dog{background:#e9f5f7;border-left:5px solid var(--dog)}
+.sense-species.cat{background:#fff5dc;border-left:5px solid var(--cat)}
+.sense-species h3{margin:0 0 6px;font-size:15px}
+.sense-species p{font-size:12.5px;line-height:1.5;color:var(--muted);margin:0}
+.behavior-change{margin-top:11px;padding:10px 12px;border-radius:10px;background:#f7faf8;border:1px dashed var(--line);font-size:12.5px;line-height:1.5;color:var(--muted)}
+
+/* LINEA */
+.timeline{display:flex;align-items:stretch;gap:9px;overflow:auto;padding:7px 2px 12px}
+.stage{min-width:150px;flex:1;background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;position:relative;cursor:pointer}
+.stage:before{content:"";position:absolute;height:5px;left:12px;right:12px;top:0;border-radius:0 0 6px 6px;background:var(--mustard)}
+.stage.selected{box-shadow:0 8px 22px rgba(22,66,75,.12);border-color:#9fc2c8}
+.stage small{color:var(--muted);font-weight:800}.stage h3{margin:5px 0 6px;font-size:15px}.stage p{font-size:12px;color:var(--muted);line-height:1.4;margin:0}
+.stage-detail{background:white;border:1px solid var(--line);border-radius:16px;padding:17px;margin-top:9px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.species{border-radius:13px;padding:14px}.species.dog{background:#e9f5f7;border-left:5px solid var(--dog)}.species.cat{background:#fff5dc;border-left:5px solid var(--cat)}
+.species h4{margin:0 0 8px}.species ul{margin:0;padding-left:18px}.species li{font-size:13px;line-height:1.5;margin:3px 0}
+.context-note{margin-top:12px;padding:10px 12px;border-radius:10px;background:#f8faf9;border:1px dashed var(--line);font-size:12.5px;color:var(--muted)}
+.topic-action{margin-top:11px;border:1px solid #9fc2c8;background:#f4fbfc;color:#123f4b;border-radius:9px;padding:8px 10px;font-size:11px;font-weight:900;cursor:pointer}
+
+/* CONCEPTOS */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px}.card .n{font-family:Inter,Segoe UI,Arial,sans-serif;font-size:27px;font-weight:800;color:var(--mustard)}.card h3{font-size:15px;margin:5px 0}.card p{font-size:12.5px;color:var(--muted);line-height:1.48;margin:0}
+
+/* EVIDENCIA */
+.evidence-search{display:grid;grid-template-columns:1.25fr repeat(2,.65fr);gap:8px;margin:12px 0 14px}
+.evidence-search input,.evidence-search select{min-height:42px;border:1px solid var(--line);border-radius:9px;background:#fff;padding:0 11px;color:var(--ink);font-size:13px}
+.evidence{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.paper{background:white;border:1px solid var(--line);border-radius:14px;padding:15px;position:relative}
+.paper.highlight{outline:1.5px solid rgba(225,174,56,.55);outline-offset:1px;box-shadow:0 5px 14px rgba(18,63,75,.08)}
+.paper-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;position:relative;z-index:1}
+.paper-tag{font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:900;padding:4px 6px;border-radius:999px;background:#eaf4f6;color:#123f4b}
+.paper-tag.cat{background:#fff2cf;color:#6d5319}.paper-tag.stage{background:#eef0f6;color:#445273}
+.paper h3{font-family:Inter,Segoe UI,Arial,sans-serif;font-size:17px;font-weight:800;margin:6px 0}.paper p{font-size:12.5px;line-height:1.5;color:var(--muted)}
+.paper-ref{font-size:11.5px;color:var(--ink);line-height:1.45;margin:7px 0}
+.article-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.article-btn,.article-link{border-radius:9px;padding:8px 10px;font-size:12px;font-weight:900;text-decoration:none;cursor:pointer;line-height:1.2}
+.article-btn{background:#fff;border:2px solid #123f4b;color:#123f4b}
+.article-link{background:#123f4b;border:2px solid #123f4b;color:#fff!important}
+.article-link:hover{background:#0b3039}
+.article-detail{display:none;margin-top:11px;padding-top:11px;border-top:1px dashed var(--line);font-size:12.5px;line-height:1.52;color:var(--muted)}
+.article-detail.open{display:block}
+.linkback{margin-top:9px;padding:8px 10px;background:#f8faf9;border-radius:8px;font-size:11.5px;color:var(--muted)}
+
+/* EXPERIENCIA */
+.causal{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.causalbox{padding:14px;border-radius:12px}.causalbox:first-child{background:#e9f5f7}.causalbox:last-child{background:#fff5dc}.arrow{font-size:30px;color:var(--mustard)}
+
+/* EVALUACION */
+.eval-wrap{margin-top:34px}
+.eval-intro{background:linear-gradient(135deg,#123f4b,#24636f);color:#fff;border-radius:17px;padding:20px}
+.eval-intro h2{margin:0 0 7px}.eval-intro p{margin:0;line-height:1.5;opacity:.9}
+.scorebox{margin-top:12px;display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:900}
+.question-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.qcard h3{font-size:14px;line-height:1.4;margin:0 0 10px}
+.options{display:grid;gap:7px}
+.option{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 10px;font-size:12.5px;color:var(--ink);cursor:pointer}
+.option:hover{border-color:#8bb7bf}.option.correct{background:#e4f4e8;border-color:#75a984}.option.wrong{background:#fae7e2;border-color:#c88a7d}
+.feedback{display:none;margin-top:9px;font-size:12px;line-height:1.5;padding:9px;border-radius:8px;background:#f6f8f7}.feedback.show{display:block}
+.matchbox{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px}
+.match-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}.matchitem{padding:11px;background:#f8faf9;border-radius:10px}.matchitem b{display:block;font-size:12px;margin-bottom:6px}.matchitem select{width:100%;min-height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:0 8px}
+.checkmatch{margin-top:10px;background:#e1ae38;border:0;border-radius:9px;padding:9px 12px;font-weight:900;color:#24363b;cursor:pointer}.matchfeedback{margin-top:8px;font-size:12.5px;font-weight:800}
+.casegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:14px}.case{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.case small{font-weight:900;color:var(--petrol2)}.case h3{font-size:14px;line-height:1.35}.case p{font-size:12.5px;color:var(--muted);line-height:1.48}.case-answer{display:none;border-top:1px dashed var(--line);margin-top:9px;padding-top:9px}.case-answer.open{display:block}.case button{border:1px solid #123f4b;background:#fff;color:#123f4b;border-radius:8px;padding:8px 10px;font-weight:900;cursor:pointer}
+
+/* BIBLIO */
+.biblio{margin-top:34px}.bib-list{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px}.bib-list ol{margin:0;padding-left:22px}.bib-list li{font-size:12px;line-height:1.5;margin:8px 0}.bib-list a{color:#123f4b;font-weight:800}
+.foot{color:var(--muted);font-size:11.5px;line-height:1.55;margin-top:28px}
+@media(max-width:850px){
+  .sense-tabs{grid-template-columns:repeat(2,1fr)}
+  .sense-compare,.compare,.cards,.evidence,.causal,.question-grid,.match-grid,.casegrid,.evidence-search{grid-template-columns:1fr}
+  .arrow{transform:rotate(90deg);text-align:center}
+}
+</style>
+</head>
+<body>
+<section class="hero">
+ <div class="brand"><div class="brandmark">🐾</div><div><small>Etología aplicada · Recurso interactivo</small><b>Universidad de La Salle</b></div></div>
+ <h1>Ontogenia de la conducta en perros y gatos</h1>
+ <p>Cómo cambia la conducta desde antes del nacimiento hasta la adultez: desarrollo sensorial, periodos sensibles, experiencia temprana, socialización y consecuencias conductuales posteriores.</p>
+ <div class="specieskeys"><span class="key">🐕 Perro</span><span class="key">🐈 Gato</span><span class="key">🧠 Desarrollo y plasticidad</span></div>
+</section>
+
+<main class="wrap">
+<nav class="nav">
+<a href="#sentidos">1. Sentidos</a><a href="#ontogenia">2. Línea ontogénica</a><a href="#conceptos">3. Conceptos</a><a href="#evidencia">4. Evidencia</a><a href="#experiencia">5. Experiencia → adulto</a><a href="#evaluacion">6. Ponte a prueba</a><a href="#bibliografia">7. Bibliografía</a>
+</nav>
+
+<section id="sentidos">
+<h2>1. Antes de la conducta: ¿cómo se abre el mundo sensorial?</h2>
+<p class="lead">La ontogenia conductual comienza con las posibilidades sensoriales del animal. Selecciona un sentido para comparar su papel temprano en perro y gato y comprender qué cambios conductuales se vuelven posibles.</p>
+<div class="sense-tabs">
+  <button class="sense-tab active" data-sense="olfato"><span class="ico" aria-label="Nariz de perro">
+<svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+  <path d="M18 20c4-5 9-7 14-7s10 2 14 7c4 5 4 11 1 16-3 5-8 8-15 8s-12-3-15-8c-3-5-3-11 1-16Z" fill="#2e2e2e"/>
+  <ellipse cx="25" cy="28" rx="3.3" ry="4.2" fill="#111"/>
+  <ellipse cx="39" cy="28" rx="3.3" ry="4.2" fill="#111"/>
+  <path d="M32 43v6" stroke="#2e2e2e" stroke-width="3" stroke-linecap="round"/>
+  <path d="M24 50c2.8 2 5.4 3 8 3s5.2-1 8-3" fill="none" stroke="#8b5e3c" stroke-width="3" stroke-linecap="round"/>
+</svg></span><b>Olfato</b></button>
+  <button class="sense-tab" data-sense="tacto"><span class="ico" aria-label="Patitas">
+<svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+  <ellipse cx="32" cy="39" rx="14" ry="11" fill="#2c7a88"/>
+  <circle cx="18" cy="25" r="6" fill="#2c7a88"/>
+  <circle cx="29" cy="18" r="6" fill="#2c7a88"/>
+  <circle cx="42" cy="20" r="6" fill="#2c7a88"/>
+  <circle cx="49" cy="31" r="6" fill="#2c7a88"/>
+</svg></span><b>Tacto</b></button>
+  <button class="sense-tab" data-sense="vision"><span class="ico emoji">👁️</span><b>Visión</b></button>
+  <button class="sense-tab" data-sense="audicion"><span class="ico" aria-label="Orejas de perro">
+<svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+  <path d="M18 12C9 16 7 29 12 43c2 6 7 9 12 6 4-3 5-10 4-18-1-9-4-16-10-19Z" fill="#8b5e3c"/>
+  <path d="M46 12c9 4 11 17 6 31-2 6-7 9-12 6-4-3-5-10-4-18 1-9 4-16 10-19Z" fill="#8b5e3c"/>
+  <path d="M20 18c-5 5-5 16-2 24" fill="none" stroke="#d7a27e" stroke-width="4" stroke-linecap="round"/>
+  <path d="M44 18c5 5 5 16 2 24" fill="none" stroke="#d7a27e" stroke-width="4" stroke-linecap="round"/>
+</svg></span><b>Audición</b></button>
+  <button class="sense-tab" data-sense="gusto"><span class="ico emoji">👅</span><b>Gusto</b></button>
+</div>
+<div class="sense-panel" id="sensePanel"></div>
+</section>
+
+<section id="ontogenia">
+<h2>2. Línea ontogénica</h2>
+<p class="lead">Selecciona una etapa. El desarrollo sensorial reaparece únicamente cuando ayuda a explicar un cambio conductual concreto.</p>
+<div class="timeline">
+ <article class="stage" data-stage="prenatal"><small>Antes del nacimiento</small><h3>Prenatal</h3><p>Organización neural y ambiente materno.</p></article>
+ <article class="stage selected" data-stage="neonatal"><small>Primeros días</small><h3>Neonatal</h3><p>Dependencia intensa y repertorio limitado.</p></article>
+ <article class="stage" data-stage="transition"><small>Apertura sensorial</small><h3>Transición</h3><p>Visión, audición y movilidad transforman la experiencia.</p></article>
+ <article class="stage" data-stage="social"><small>Alta plasticidad</small><h3>Socialización</h3><p>Aprendizaje social y exposición al ambiente.</p></article>
+ <article class="stage" data-stage="juvenile"><small>Exploración</small><h3>Juvenil</h3><p>Mayor autonomía, juego y aprendizaje.</p></article>
+ <article class="stage" data-stage="adolescent"><small>Maduración</small><h3>Adolescencia</h3><p>Cambios sociales y sexuales.</p></article>
+ <article class="stage" data-stage="adult"><small>Estabilidad relativa</small><h3>Adulto</h3><p>Patrones modulados por historia y ambiente.</p></article>
+ <article class="stage" data-stage="senior"><small>Envejecimiento</small><h3>Senescencia</h3><p>Cambios sensoriales, físicos y cognitivos.</p></article>
+</div>
+<div id="stageDetail" class="stage-detail"></div>
+</section>
+
+<section id="conceptos">
+<h2>3. Conceptos fundamentales para interpretar la ontogenia</h2>
+<p class="lead">La edad por sí sola no explica la conducta. Cada concepto puede llevarte directamente a la evidencia científica relacionada.</p>
+<div class="cards">
+<article class="card"><div class="n">01</div><h3>Maduración</h3><p>Cambios biológicos y neurológicos que hacen posibles nuevas capacidades motoras, sensoriales y cognitivas.</p><button class="topic-action" data-ev="neonatal transition">Ver evidencia relacionada</button></article>
+<article class="card"><div class="n">02</div><h3>Plasticidad</h3><p>Capacidad del sistema nervioso y de la conducta para modificarse en respuesta a la experiencia.</p><button class="topic-action" data-ev="early plasticity">Ver evidencia relacionada</button></article>
+<article class="card"><div class="n">03</div><h3>Periodo sensible</h3><p>Ventana de especial receptividad a determinados estímulos. No es un límite absoluto e irreversible.</p><button class="topic-action" data-ev="sensitive fear social">Ver evidencia relacionada</button></article>
+<article class="card"><div class="n">04</div><h3>Socialización</h3><p>Proceso mediante el cual el individuo aprende a interactuar con congéneres, humanos y otros elementos sociales relevantes.</p><button class="topic-action" data-ev="social">Ver evidencia relacionada</button></article>
+<article class="card"><div class="n">05</div><h3>Experiencia temprana</h3><p>Madre, camada, manipulación, destete, ambiente físico y exposición social pueden modificar trayectorias posteriores.</p><button class="topic-action" data-ev="early maternal weaning">Ver evidencia relacionada</button></article>
+<article class="card"><div class="n">06</div><h3>Diferencias individuales</h3><p>Genética, raza, sexo, salud y experiencia hacen que individuos de la misma edad no sean conductualmente idénticos.</p><button class="topic-action" data-ev="individual breed">Ver evidencia relacionada</button></article>
+</div>
+</section>
+
+<section id="evidencia">
+<h2>4. Evidencia científica vinculada con los temas</h2>
+<p class="lead">Cada artículo indica qué etapa o concepto ayuda a interpretar. Los botones “Ver evidencia relacionada” de las secciones anteriores llevan directamente aquí y resaltan los trabajos pertinentes.</p>
+<div class="evidence-search">
+<input id="paperSearch" type="search" placeholder="Buscar: socialización, madre, miedo, destete, raza…">
+<select id="paperSpecies"><option value="all">Perro y gato</option><option value="dog">Perro</option><option value="cat">Gato</option></select>
+<select id="paperStage"><option value="all">Todas las etapas</option><option value="prenatal">Prenatal</option><option value="neonatal">Neonatal</option><option value="transition">Transición</option><option value="social">Socialización</option><option value="juvenile">Juvenil</option><option value="adult">Adulto / resultado posterior</option></select>
+</div>
+<div class="evidence" id="paperGrid">
+
+<article class="paper" data-tags="dog prenatal gestation maternal enrichment offspring behavior">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Prenatal</span></div>
+<h3>Gestational enrichment of commercial breeding dams (Canis familiaris) influences offspring behaviour</h3>
+<div class="paper-ref">Estudio publicado en <i>Applied Animal Behaviour Science</i> (2025).</div>
+<p>Evalúa si el enriquecimiento de hembras reproductoras durante la gestación se relaciona con diferencias posteriores en la conducta de sus cachorros.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://www.sciencedirect.com/science/article/pii/S0168159125002771" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> El enriquecimiento materno durante la gestación se relacionó con diferencias posteriores en respuestas conductuales de las crías, incluyendo medidas asociadas con confianza, exploración y afiliación hacia personas, con algunos efectos dependientes del sexo. Es evidencia directa de que el ambiente prenatal puede contribuir a la trayectoria conductual, aunque no actúa de forma aislada.<div class="linkback"><b>Conecta con:</b> etapa prenatal · ambiente gestacional · desarrollo · afrontamiento posterior.</div></div>
+</article>
+
+
+<article class="paper" data-tags="dog neonatal early maternal plasticity adult">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Neonatal → adulto</span></div>
+<h3>Levels of maternal care in dogs affect adult offspring temperament</h3>
+<div class="paper-ref">Foyer, P. et al. (2016). <i>Scientific Reports</i>, 6, 19253.</div>
+<p>Relaciona diferencias en cuidado materno durante las primeras tres semanas con rasgos conductuales posteriores.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1038/srep19253" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Se observaron madres Pastor Alemán y sus camadas. Los niveles de cuidado materno se asociaron con diferencias posteriores en compromiso físico y social y agresión. Es evidencia directa de que el ambiente posnatal temprano puede relacionarse con el temperamento adulto.<div class="linkback"><b>Conecta con:</b> etapa neonatal · cuidado materno · plasticidad · diferencias individuales.</div></div>
+</article>
+
+<article class="paper" data-tags="dog neonatal early maternal social">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Neonatal → 2 meses</span></div>
+<h3>Influence of Maternal Care on Behavioural Development of Domestic Dogs Living in a Home Environment</h3>
+<div class="paper-ref">Guardini, G. et al. (2017). <i>Animals</i>, 7(12), 93.</div>
+<p>Evalúa cuidado materno en camadas y respuestas conductuales de cachorros a los dos meses.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.3390/ani7120093" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> La cantidad de cuidado materno se relacionó con respuestas hacia una persona desconocida, exploración, juego y aislamiento. Los autores señalan que el cuidado debe interpretarse junto con el ambiente físico y social de crianza.<div class="linkback"><b>Conecta con:</b> neonatal · madre–cachorro · ambiente temprano · afrontamiento.</div></div>
+</article>
+
+<article class="paper" data-tags="dog neonatal early stimulation plasticity">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Neonatal</span></div>
+<h3>The Effect of Early Neurological Stimulation on Puppy Welfare in Commercial Breeding Kennels</h3>
+<div class="paper-ref">Boone, G. et al. (2023). <i>Animals</i>, 13(1), 71.</div>
+<p>Contrasta estimulación neurológica temprana, manipulación simple y manejo habitual.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.3390/ani13010071" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> En esta población, la estimulación neurológica temprana no produjo ventajas claras sobre una manipulación cuidadosa y consistente en las respuestas evaluadas. Es útil para enseñar que una práctica popular no debe asumirse eficaz sin evidencia.<div class="linkback"><b>Conecta con:</b> neonatal · estimulación · evaluación crítica de evidencia.</div></div>
+</article>
+
+<article class="paper" data-tags="dog transition social sensitive fear breed individual">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Transición / socialización</span></div>
+<h3>Breed-dependent differences in the onset of fear-related avoidance behavior in puppies</h3>
+<div class="paper-ref">Morrow, M. et al. (2015). <i>Journal of Veterinary Behavior</i>, 10(4), 286–294.</div>
+<p>Muestra que la aparición de respuestas de evitación relacionadas con miedo no comienza exactamente a la misma edad en todas las razas.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1016/j.jveb.2015.03.002" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Se evaluaron cachorros de tres razas entre aproximadamente 4–5 y 10 semanas. Hubo diferencias en el momento de aparición y la expresión de evitación. Refuerza que el “periodo sensible” es un rango biológico con variación y no una fecha universal.<div class="linkback"><b>Conecta con:</b> transición · periodo sensible · miedo · raza.</div></div>
+</article>
+
+<article class="paper" data-tags="dog social sensitive early fear adult">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Socialización → adulto</span></div>
+<h3>Puppy parties and beyond: the role of early age socialization practices on adult dog behavior</h3>
+<div class="paper-ref">Howell, T. J., King, T., & Bennett, P. C. (2015). <i>Veterinary Medicine: Research and Reports</i>, 6, 143–153.</div>
+<p>Revisión de la evidencia sobre socialización temprana y posibles consecuencias conductuales posteriores.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.2147/VMRR.S62081" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Discute exposición a personas, animales, objetos y ambientes durante el desarrollo y su relación con miedo y agresión. También advierte que la evidencia sobre determinadas prácticas no es uniforme.<div class="linkback"><b>Conecta con:</b> socialización · habituación · miedo · prevención.</div></div>
+</article>
+
+<article class="paper" data-tags="dog early maternal adult cognition individual">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Neonatal → adulto</span></div>
+<h3>Effects of maternal investment, temperament, and cognition on guide dog success</h3>
+<div class="paper-ref">Bray, E. E. et al. (2017). <i>PNAS</i>, 114(34), 9128–9133.</div>
+<p>Sigue cachorros desde el nacimiento hasta el resultado final en un programa de perros guía.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1073/pnas.1704303114" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> El vínculo entre inversión materna y éxito posterior no fue lineal. Es muy útil para evitar la idea simplista de que “más cuidado” siempre produce el mismo resultado conductual.<div class="linkback"><b>Conecta con:</b> cuidado materno · desarrollo · temperamento · cognición.</div></div>
+</article>
+
+<article class="paper" data-tags="dog adult breed individual genetics">
+<div class="paper-meta"><span class="paper-tag">Perro</span><span class="paper-tag stage">Variación individual</span></div>
+<h3>Ancestry-inclusive dog genomics challenges popular breed stereotypes</h3>
+<div class="paper-ref">Morrill, K. et al. (2022). <i>Science</i>, 376(6592), eabk0639.</div>
+<p>Integra genómica y conducta para mostrar cuánto explica y cuánto no explica la raza en la conducta individual.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1126/science.abk0639" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Aunque algunos rasgos muestran asociaciones con ascendencia, existe enorme variación dentro de raza. El fenotipo conductual emerge de genética, desarrollo, ambiente y aprendizaje.<div class="linkback"><b>Conecta con:</b> diferencias individuales · genética · raza · ambiente.</div></div>
+</article>
+
+<article class="paper" data-tags="cat social early sensitive adult individual">
+<div class="paper-meta"><span class="paper-tag cat">Gato</span><span class="paper-tag stage">Socialización → adulto</span></div>
+<h3>The impact of paternity and early socialisation on the development of cats' behaviour to people and novel objects</h3>
+<div class="paper-ref">McCune, S. (1995). <i>Applied Animal Behaviour Science</i>, 45(1–2), 109–124.</div>
+<p>Combina manipulación temprana y características paternas para explicar respuestas posteriores.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1016/0168-1591(95)00603-P" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Los gatitos manipulados tempranamente mostraron posteriormente mayor rapidez para acercarse e interactuar con personas. También se observaron asociaciones con características del padre, mostrando que herencia y experiencia actúan conjuntamente.<div class="linkback"><b>Conecta con:</b> socialización felina · genética · novedad · relación humano–gato.</div></div>
+</article>
+
+<article class="paper" data-tags="cat social early sensitive adult fear">
+<div class="paper-meta"><span class="paper-tag cat">Gato</span><span class="paper-tag stage">Socialización → adulto</span></div>
+<h3>The effects of additional socialisation for kittens in a rescue centre on their behaviour and suitability as a pet</h3>
+<div class="paper-ref">Casey, R. A., & Bradshaw, J. W. S. (2008). <i>Applied Animal Behaviour Science</i>, 114(1–2), 196–205.</div>
+<p>Compara socialización estándar y enriquecida en gatitos de centros de rescate y evalúa resultados posteriores.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1016/j.applanim.2008.01.003" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Los tutores de gatitos con socialización adicional reportaron más apoyo emocional y menos conductas indicativas de miedo hacia humanos. Es una evidencia aplicada sobre calidad de exposición durante el periodo de socialización.<div class="linkback"><b>Conecta con:</b> socialización felina · miedo a humanos · refugio.</div></div>
+</article>
+
+<article class="paper" data-tags="cat juvenile early weaning adult aggression stereotypy">
+<div class="paper-meta"><span class="paper-tag cat">Gato</span><span class="paper-tag stage">Destete / juvenil → adulto</span></div>
+<h3>Early weaning increases aggression and stereotypic behaviour in cats</h3>
+<div class="paper-ref">Ahola, M. K., Vapalahti, K., & Lohi, H. (2017). <i>Scientific Reports</i>, 7, 10412.</div>
+<p>Explora la relación entre edad de destete y conducta posterior en una gran muestra de gatos domésticos.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1038/s41598-017-11173-5" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> El destete antes de 8 semanas se asoció con mayor riesgo de agresión; destetes más tardíos se asociaron con menor probabilidad de agresión hacia extraños y conducta estereotipada.<div class="linkback"><b>Conecta con:</b> destete · juvenil · agresión · estereotipias · experiencia temprana.</div></div>
+</article>
+
+<article class="paper" data-tags="cat juvenile adult individual">
+<div class="paper-meta"><span class="paper-tag cat">Gato</span><span class="paper-tag stage">Juvenil → adulto</span></div>
+<h3>Ontogeny of individuality in the domestic cat in the home environment</h3>
+<div class="paper-ref">Lowe, S. E., & Bradshaw, J. W. S. (2001). <i>Animal Behaviour</i>, 61(1), 231–237.</div>
+<p>Sigue gatos a diferentes edades para estudiar estabilidad y cambio de diferencias individuales.</p>
+<div class="article-actions"><button class="article-btn">Ver resumen</button><a class="article-link" href="https://doi.org/10.1006/anbe.2000.1545" target="_blank" rel="noopener">Abrir artículo ↗</a></div>
+<div class="article-detail"><b>¿Qué aporta?</b> Demuestra que la individualidad conductual se desarrolla y puede mostrar continuidad a lo largo del tiempo. Ayuda a integrar etapa juvenil, experiencia doméstica y personalidad adulta.<div class="linkback"><b>Conecta con:</b> juvenil · individualidad · continuidad y cambio.</div></div>
+</article>
+
+</div>
+<div id="paperEmpty" style="display:none;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:18px;margin-top:12px;color:var(--muted);font-size:13px">No hay artículos de esta selección que correspondan exactamente a la etapa elegida.</div>
+</section>
+
+<section id="experiencia">
+<h2>5. De la experiencia temprana a la conducta adulta</h2>
+<p class="lead">La evidencia sugiere trayectorias probabilísticas, no determinismo. La misma experiencia puede producir resultados diferentes según genética, contexto, intensidad, momento y experiencias posteriores.</p>
+<div class="causal">
+<div class="causalbox"><b>Experiencia durante el desarrollo</b><p style="font-size:13px;color:var(--muted)">Madre y camada · manipulación · destete · personas · congéneres · estímulos · separación · ambiente físico · exploración.</p></div>
+<div class="arrow">→</div>
+<div class="causalbox"><b>Resultados que pueden modificarse</b><p style="font-size:13px;color:var(--muted)">Sociabilidad · miedo · exploración · agresión · respuestas a novedad · interacción humano-animal · afrontamiento · individualidad.</p></div>
+</div>
+<div class="context-note"><b>Lectura científica:</b> Foyer, Guardini, Bray, McCune, Casey & Bradshaw, Ahola y Lowe & Bradshaw muestran, desde diseños diferentes, que las experiencias tempranas se relacionan con resultados posteriores, pero no permiten reducir la conducta adulta a una sola causa.</div>
+<button class="topic-action" data-ev="early adult">Ver artículos sobre efectos posteriores</button>
+</section>
+
+<section id="evaluacion" class="eval-wrap">
+<div class="eval-intro">
+<h2>6. Ponte a prueba</h2>
+<p>Evalúa comprensión y capacidad de aplicar la evidencia, no solo memoria de edades.</p>
+<div class="scorebox">Puntaje de comprensión: <span id="score">0</span> / 6</div>
+</div>
+
+<div class="question-grid">
+<article class="qcard" data-q="1"><h3>1. Un cachorro neonatal todavía no ve ni oye plenamente. ¿Cuál afirmación es más correcta?</h3><div class="options">
+<button class="option" data-c="0">Recibe muy poca información del ambiente.</button>
+<button class="option" data-c="1">Olfato, tacto y señales térmicas ya aportan información relevante.</button>
+<button class="option" data-c="0">Su conducta depende únicamente de reflejos sin experiencia.</button>
+<button class="option" data-c="0">La experiencia empieza cuando abre los ojos.</button>
+</div><div class="feedback">La experiencia sensorial comienza antes de la apertura ocular; olfato, tacto y temperatura son funcionalmente importantes.</div></article>
+
+<article class="qcard" data-q="2"><h3>2. ¿Qué implica que el periodo de socialización sea un “periodo sensible”?</h3><div class="options">
+<button class="option" data-c="0">Que después de esa edad ya no es posible aprender.</button>
+<button class="option" data-c="0">Que todos los individuos tienen exactamente las mismas fechas.</button>
+<button class="option" data-c="1">Que existe una ventana de especial plasticidad, pero el aprendizaje continúa después.</button>
+<button class="option" data-c="0">Que la genética deja de influir durante ese periodo.</button>
+</div><div class="feedback">Morrow et al. muestran variación incluso entre razas; una ventana sensible no equivale a una fecha rígida.</div></article>
+
+<article class="qcard" data-q="3"><h3>3. ¿Cuál lectura de los estudios de cuidado materno en perros es más rigurosa?</h3><div class="options">
+<button class="option" data-c="0">Más cuidado materno siempre produce mejores perros adultos.</button>
+<button class="option" data-c="1">El cuidado materno se relaciona con resultados posteriores, pero su efecto depende del contexto y no es lineal.</button>
+<button class="option" data-c="0">La madre solo influye en supervivencia, no en conducta.</button>
+<button class="option" data-c="0">El temperamento adulto se define por completo en las primeras tres semanas.</button>
+</div><div class="feedback">Foyer, Guardini y Bray muestran asociaciones reales, pero diferentes. Eso obliga a evitar interpretaciones deterministas.</div></article>
+
+<article class="qcard" data-q="4"><h3>4. En gatos, ¿qué hallazgo apoya directamente la importancia del destete?</h3><div class="options">
+<button class="option" data-c="0">El destete temprano elimina el miedo a personas.</button>
+<button class="option" data-c="1">El destete antes de 8 semanas se asoció con mayor riesgo de agresión.</button>
+<button class="option" data-c="0">La edad de destete no se relaciona con la conducta posterior.</button>
+<button class="option" data-c="0">Solo afecta la conducta alimentaria.</button>
+</div><div class="feedback">Ahola et al. estudiaron miles de gatos y encontraron asociaciones con agresión y comportamiento estereotipado.</div></article>
+
+<article class="qcard" data-q="5"><h3>5. ¿Qué demuestra mejor el estudio de McCune sobre gatos?</h3><div class="options">
+<button class="option" data-c="0">Que solo la experiencia temprana explica la conducta hacia personas.</button>
+<button class="option" data-c="0">Que solo las características heredadas importan.</button>
+<button class="option" data-c="1">Que experiencia social temprana y características familiares pueden contribuir conjuntamente.</button>
+<button class="option" data-c="0">Que los gatos no tienen un periodo de socialización.</button>
+</div><div class="feedback">El diseño integra manipulación temprana y características paternas, permitiendo enseñar interacción entre herencia y ambiente.</div></article>
+
+<article class="qcard" data-q="6"><h3>6. Si dos perros de la misma raza muestran conductas diferentes, ¿qué interpretación está mejor sustentada?</h3><div class="options">
+<button class="option" data-c="0">Uno de los dos no representa realmente a su raza.</button>
+<button class="option" data-c="0">La conducta debería ser prácticamente idéntica por compartir raza.</button>
+<button class="option" data-c="1">La raza puede contribuir a tendencias, pero existe gran variación individual y efecto del desarrollo y ambiente.</button>
+<button class="option" data-c="0">Las diferencias solo se deben al entrenamiento actual.</button>
+</div><div class="feedback">Morrill et al. ayudan a separar asociaciones poblacionales de predicciones deterministas sobre individuos.</div></article>
+</div>
+
+<div class="matchbox">
+<h3>Relaciona la etapa con la evidencia</h3>
+<p class="lead" style="margin-bottom:8px">Selecciona el estudio que mejor responde a cada pregunta.</p>
+<div class="match-grid">
+<div class="matchitem"><b>¿Qué evidencia usarías para discutir cuidado materno y temperamento adulto en perros?</b><select data-answer="foyer"><option value="">Selecciona…</option><option value="mccune">McCune 1995</option><option value="foyer">Foyer et al. 2016</option><option value="ahola">Ahola et al. 2017</option></select></div>
+<div class="matchitem"><b>¿Qué evidencia usarías para discutir destete y conducta posterior en gatos?</b><select data-answer="ahola"><option value="">Selecciona…</option><option value="morrow">Morrow et al. 2015</option><option value="ahola">Ahola et al. 2017</option><option value="bray">Bray et al. 2017</option></select></div>
+<div class="matchitem"><b>¿Qué estudio muestra variación en la aparición de evitación por miedo entre razas?</b><select data-answer="morrow"><option value="">Selecciona…</option><option value="morrow">Morrow et al. 2015</option><option value="casey">Casey & Bradshaw 2008</option><option value="lowe">Lowe & Bradshaw 2001</option></select></div>
+<div class="matchitem"><b>¿Qué estudio relaciona socialización adicional de gatitos de refugio con menor miedo hacia humanos?</b><select data-answer="casey"><option value="">Selecciona…</option><option value="casey">Casey & Bradshaw 2008</option><option value="morrill">Morrill et al. 2022</option><option value="boone">Boone et al. 2023</option></select></div>
+</div>
+<button id="checkMatch" class="checkmatch">Comprobar relaciones</button><div id="matchFeedback" class="matchfeedback"></div>
+</div>
+
+<h2 style="margin-top:28px">Casos para aplicar el conocimiento</h2>
+<div class="casegrid">
+<article class="case"><small>Caso 1 · Perro</small><h3>Cachorro de 5 semanas que evita estímulos nuevos</h3><p>¿Sería correcto concluir que “ya perdió” su oportunidad de socialización?</p><button>Analizar caso</button><div class="case-answer"><b>No.</b> Debe considerarse variación individual y racial, intensidad de miedo, historia previa y exposición gradual. Morrow et al. muestran que la aparición de evitación no es idéntica entre razas.</div></article>
+<article class="case"><small>Caso 2 · Gato</small><h3>Gatito separado de madre y camada a las 6 semanas</h3><p>¿Qué evidencia debería hacerte prestar atención a esa historia?</p><button>Analizar caso</button><div class="case-answer">Ahola et al. vinculan destete antes de 8 semanas con mayor riesgo de agresión. No predice que ese individuo desarrollará el problema, pero sí identifica un factor de riesgo relevante.</div></article>
+<article class="case"><small>Caso 3 · Perro</small><h3>Programa de “estimulación neurológica” neonatal</h3><p>El criador afirma que garantiza cachorros más resistentes al estrés. ¿Qué responderías?</p><button>Analizar caso</button><div class="case-answer">La evidencia no permite hablar de garantía. Boone et al. no encontraron una ventaja clara del protocolo frente a manipulación cuidadosa y consistente en la población estudiada.</div></article>
+</div>
+</section>
+
+<section id="bibliografia" class="biblio">
+<h2>7. Bibliografía científica utilizada</h2>
+<p class="lead">Referencias incluidas en el artefacto para que los estudiantes puedan regresar a la fuente original.</p>
+<div class="bib-list"><ol><li>Gestational enrichment of commercial breeding dams (Canis familiaris) influences offspring behaviour. <i>Applied Animal Behaviour Science</i> (2025). <a target="_blank" href="https://www.sciencedirect.com/science/article/pii/S0168159125002771">Artículo</a></li>
+<li>Foyer, P. et al. (2016). Levels of maternal care in dogs affect adult offspring temperament. <i>Scientific Reports</i>, 6, 19253. <a target="_blank" href="https://doi.org/10.1038/srep19253">DOI</a></li>
+<li>Guardini, G. et al. (2017). Influence of Maternal Care on Behavioural Development of Domestic Dogs Living in a Home Environment. <i>Animals</i>, 7(12), 93. <a target="_blank" href="https://doi.org/10.3390/ani7120093">DOI</a></li>
+<li>Boone, G. et al. (2023). The Effect of Early Neurological Stimulation on Puppy Welfare in Commercial Breeding Kennels. <i>Animals</i>, 13(1), 71. <a target="_blank" href="https://doi.org/10.3390/ani13010071">DOI</a></li>
+<li>Morrow, M. et al. (2015). Breed-dependent differences in the onset of fear-related avoidance behavior in puppies. <i>Journal of Veterinary Behavior</i>, 10(4), 286–294. <a target="_blank" href="https://doi.org/10.1016/j.jveb.2015.03.002">DOI</a></li>
+<li>Howell, T. J., King, T., & Bennett, P. C. (2015). Puppy parties and beyond. <i>Veterinary Medicine: Research and Reports</i>, 6, 143–153. <a target="_blank" href="https://doi.org/10.2147/VMRR.S62081">DOI</a></li>
+<li>Bray, E. E. et al. (2017). Effects of maternal investment, temperament, and cognition on guide dog success. <i>PNAS</i>, 114(34), 9128–9133. <a target="_blank" href="https://doi.org/10.1073/pnas.1704303114">DOI</a></li>
+<li>Morrill, K. et al. (2022). Ancestry-inclusive dog genomics challenges popular breed stereotypes. <i>Science</i>, 376(6592), eabk0639. <a target="_blank" href="https://doi.org/10.1126/science.abk0639">DOI</a></li>
+<li>McCune, S. (1995). The impact of paternity and early socialisation on the development of cats' behaviour to people and novel objects. <i>Applied Animal Behaviour Science</i>, 45(1–2), 109–124. <a target="_blank" href="https://doi.org/10.1016/0168-1591(95)00603-P">DOI</a></li>
+<li>Casey, R. A., & Bradshaw, J. W. S. (2008). The effects of additional socialisation for kittens in a rescue centre on their behaviour and suitability as a pet. <i>Applied Animal Behaviour Science</i>, 114(1–2), 196–205. <a target="_blank" href="https://doi.org/10.1016/j.applanim.2008.01.003">DOI</a></li>
+<li>Ahola, M. K., Vapalahti, K., & Lohi, H. (2017). Early weaning increases aggression and stereotypic behaviour in cats. <i>Scientific Reports</i>, 7, 10412. <a target="_blank" href="https://doi.org/10.1038/s41598-017-11173-5">DOI</a></li>
+<li>Lowe, S. E., & Bradshaw, J. W. S. (2001). Ontogeny of individuality in the domestic cat in the home environment. <i>Animal Behaviour</i>, 61(1), 231–237. <a target="_blank" href="https://doi.org/10.1006/anbe.2000.1545">DOI</a></li>
+</ol></div>
+</section>
+
+<p class="foot">Recurso docente para el estudio de la ontogenia de la conducta. Las edades y ventanas de desarrollo deben interpretarse como rangos aproximados y dependientes de especie, individuo y fuente científica. La estructura prioriza comprensión conceptual sobre memorización de fechas aisladas.</p>
+</main>
+
+<script>
+const senseData={
+olfato:{
+ title:"Olfato",
+ dog:"Funcional desde etapas muy tempranas. Orienta búsqueda de la madre, pezón y reconocimiento del entorno cercano antes de que visión y audición estén plenamente disponibles.",
+ cat:"También es crucial desde el inicio para orientación hacia madre y camada y para reconocimiento químico del ambiente inmediato.",
+ change:"Cambio conductual clave: permite orientación y búsqueda dirigidas antes de la apertura ocular. La experiencia sensorial empieza antes de ver."
+},
+tacto:{
+ title:"Tacto",
+ dog:"El contacto corporal, la temperatura y la estimulación cutánea tienen gran relevancia durante la etapa neonatal, cuando la regulación fisiológica aún es inmadura.",
+ cat:"Contacto, calor y estimulación materna forman parte central del ambiente funcional del neonato.",
+ change:"Cambio conductual clave: favorece orientación corporal, contacto social temprano y respuestas de búsqueda y regulación."
+},
+vision:{
+ title:"Visión",
+ dog:"Los ojos permanecen cerrados inicialmente y la función visual aparece de forma progresiva durante la transición; abrir los ojos no equivale a tener visión adulta.",
+ cat:"La visión también madura progresivamente y amplía de manera importante exploración, orientación y respuesta a movimiento.",
+ change:"Cambio conductual clave: aparecen nuevas formas de exploración, interacción social y orientación espacial."
+},
+audicion:{
+ title:"Audición",
+ dog:"La funcionalidad auditiva se desarrolla después del periodo neonatal y amplía el repertorio de orientación y aprendizaje frente a sonidos.",
+ cat:"La maduración auditiva permite respuestas más complejas a vocalizaciones, ambiente y estímulos novedosos.",
+ change:"Cambio conductual clave: aumenta la capacidad de localizar estímulos, aprender asociaciones sonoras y responder socialmente."
+},
+gusto:{
+ title:"Gusto",
+ dog:"Participa tempranamente en la conducta alimentaria y posteriormente se integra con olfato y experiencia para modular preferencias.",
+ cat:"Se integra con olfato y experiencia alimentaria y participa en selección y rechazo de alimentos.",
+ change:"Cambio conductual clave: contribuye a preferencias y aprendizaje alimentario; su papel es menor que olfato o tacto para orientación neonatal."
+}
+};
+function renderSense(key){
+ const d=senseData[key], panel=document.getElementById("sensePanel");
+ panel.innerHTML=`<div class="sense-compare">
+ <div class="sense-species dog"><h3>🐕 Perro · ${d.title}</h3><p>${d.dog}</p></div>
+ <div class="sense-species cat"><h3>🐈 Gato · ${d.title}</h3><p>${d.cat}</p></div>
+ </div><div class="behavior-change"><b>${d.change}</b></div>`;
+}
+document.querySelectorAll(".sense-tab").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll(".sense-tab").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active"); renderSense(btn.dataset.sense);
+}));
+renderSense("olfato");
+
+const stages={
+prenatal:{dog:["Desarrollo neural antes del nacimiento.","El estado y ambiente maternos forman parte del contexto prenatal.","Se organizan sistemas que luego sostendrán la conducta posnatal."],cat:["Desarrollo fetal y organización de sistemas sensoriales y motores.","El ambiente materno constituye el contexto biológico inmediato.","Es una fase de preparación para la adaptación posnatal."],note:"La funcionalidad sensorial posnatal depende de procesos que comienzan antes del nacimiento.",ev:"prenatal"},
+neonatal:{dog:["Alta dependencia materna.","Movilidad limitada; predominan orientación térmica, táctil y olfativa.","Sueño y alimentación ocupan gran parte del tiempo."],cat:["Dependencia materna intensa y regulación fisiológica inmadura.","Olfato, tacto y temperatura son claves para orientación.","Las interacciones con madre y camada forman el ambiente social inicial."],note:"Visión y audición aún no tienen la funcionalidad que alcanzarán durante la transición.",ev:"neonatal maternal early"},
+transition:{dog:["Aumentan movilidad y exploración.","La apertura ocular y maduración auditiva amplían el entorno perceptual.","Cambian rápidamente respuestas de orientación."],cat:["Aumento de movilidad y coordinación.","El mundo perceptual se amplía con visión y audición funcionales.","Mayor interacción activa con camada y ambiente."],note:"La aparición de nuevas capacidades perceptuales modifica el repertorio conductual.",ev:"transition sensitive fear"},
+social:{dog:["Alta receptividad a experiencias sociales y ambientales.","Interacciones con perros, humanos y estímulos novedosos adquieren especial importancia.","El aprendizaje continúa más allá de esta ventana."],cat:["La experiencia con humanos y congéneres influye sobre respuestas sociales posteriores.","Juego, exploración y aprendizaje social aumentan.","Calidad y gradualidad de las experiencias importan."],note:"Periodo sensible no significa fecha de caducidad: describe mayor plasticidad, no imposibilidad de aprender después.",ev:"social sensitive fear"},
+juvenile:{dog:["Aumentan autonomía, juego y exploración.","Se consolidan aprendizajes y habilidades sociales.","Experiencias repetidas siguen modificando respuestas."],cat:["Mayor competencia motora y predatoria.","Juego y exploración contribuyen al desarrollo conductual.","Las relaciones sociales siguen ajustándose."],note:"Los sentidos ya no son el eje principal; ganan peso aprendizaje, motivación y experiencia.",ev:"juvenile weaning individual"},
+adolescent:{dog:["Cambios hormonales y sociales.","Puede aumentar exploración, independencia o variabilidad de respuestas.","La conducta adulta todavía se está consolidando."],cat:["Maduración sexual y reorganización social.","Cambios en exploración y conducta reproductiva según individuo y manejo.","Persisten aprendizaje y plasticidad."],note:"La adolescencia no debe interpretarse como una causa única de problemas conductuales.",ev:"individual breed adult"},
+adult:{dog:["Patrones más estables, pero modificables.","Conducta resulta de historia de desarrollo, aprendizaje y ambiente actual.","Salud y contexto continúan modulándola."],cat:["Mayor estabilidad relativa del repertorio.","Ambiente, relaciones sociales y oportunidades de conducta siguen siendo importantes.","El aprendizaje continúa."],note:"La ontogenia no termina en la socialización: el comportamiento adulto continúa siendo plástico.",ev:"adult individual"},
+senior:{dog:["Cambios sensoriales y físicos pueden modificar interacción y actividad.","El envejecimiento cognitivo puede alterar rutinas y respuestas.","Debe diferenciarse cambio conductual de enfermedad o dolor."],cat:["Cambios sensoriales, locomotores y cognitivos pueden modificar conducta.","Puede cambiar tolerancia social, actividad y exploración.","La evaluación clínica es esencial ante cambios nuevos."],note:"Aquí los sentidos vuelven a ser importantes, ahora por posible deterioro y no por maduración.",ev:"adult individual"}
+};
+function renderStage(key){
+ const d=stages[key], label=document.querySelector(`.stage[data-stage="${key}"] h3`).textContent;
+ document.getElementById("stageDetail").innerHTML=`<div class="compare">
+ <div class="species dog"><h4>🐕 Perro · ${label}</h4><ul>${d.dog.map(i=>`<li>${i}</li>`).join("")}</ul></div>
+ <div class="species cat"><h4>🐈 Gato · ${label}</h4><ul>${d.cat.map(i=>`<li>${i}</li>`).join("")}</ul></div>
+ </div><div class="context-note">🔎 <b>Conexión sensorial:</b> ${d.note}</div>
+ <button class="topic-action stage-ev-btn" data-ev="${d.ev}">Ver evidencia científica relacionada con esta etapa</button>`;
+ document.querySelector(".stage-ev-btn").addEventListener("click",e=>goEvidence(e.target.dataset.ev));
+}
+document.querySelectorAll(".stage").forEach(s=>s.addEventListener("click",()=>{
+ document.querySelectorAll(".stage").forEach(x=>x.classList.remove("selected"));
+ s.classList.add("selected"); renderStage(s.dataset.stage);
+}));
+renderStage("neonatal");
+
+const paperSearch=document.getElementById("paperSearch"), paperSpecies=document.getElementById("paperSpecies"), paperStage=document.getElementById("paperStage");
+function norm(s){return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+function filterPapers(extraTerms="", mode="search"){
+ const queryTerms=norm((paperSearch.value||"")).trim().split(/\s+/).filter(Boolean);
+ const relationTerms=norm(extraTerms).trim().split(/\s+/).filter(Boolean);
+ let visible=0;
+ document.querySelectorAll("#paperGrid .paper").forEach(p=>{
+   const tags=norm(p.dataset.tags||"").split(/\s+/).filter(Boolean);
+   const blob=norm(p.innerText+" "+(p.dataset.tags||""));
+   const queryOk=queryTerms.length===0||queryTerms.every(t=>blob.includes(t));
+   const relationOk=relationTerms.length===0 || (mode==="exact" ? relationTerms.some(t=>tags.includes(t)) : relationTerms.some(t=>blob.includes(t)));
+   const sp=paperSpecies.value, st=paperStage.value;
+   const spOk=sp==="all"||tags.includes(sp);
+   const stOk=st==="all"||tags.includes(st);
+   const show=queryOk&&relationOk&&spOk&&stOk;
+   p.style.display=show?"block":"none";
+   if(show)visible++;
+ });
+ const empty=document.getElementById("paperEmpty");
+ if(empty) empty.style.display=visible?"none":"block";
+ return visible;
+}
+paperSearch.addEventListener("input",()=>filterPapers("","search"));
+paperSpecies.addEventListener("change",()=>filterPapers("","search"));
+paperStage.addEventListener("change",()=>filterPapers("","search"));
+
+document.querySelectorAll(".article-btn").forEach(btn=>btn.addEventListener("click",()=>{
+ const d=btn.parentElement.nextElementSibling; const open=d.classList.toggle("open");
+ btn.textContent=open?"Ocultar resumen":"Ver resumen";
+}));
+function goEvidence(terms){
+ paperSearch.value=""; paperSpecies.value="all"; paperStage.value="all";
+ document.querySelectorAll("#paperGrid .paper").forEach(p=>p.classList.remove("highlight"));
+ filterPapers(terms,"exact");
+ document.querySelectorAll("#paperGrid .paper").forEach(p=>{if(p.style.display!=="none")p.classList.add("highlight")});
+ document.getElementById("evidencia").scrollIntoView({behavior:"smooth",block:"start"});
+ setTimeout(()=>document.querySelectorAll("#paperGrid .paper").forEach(p=>p.classList.remove("highlight")),2800);
+}
+document.querySelectorAll(".topic-action").forEach(btn=>{
+ if(!btn.classList.contains("stage-ev-btn")) btn.addEventListener("click",()=>goEvidence(btn.dataset.ev||""));
+});
+
+let correctAnswered=new Set();
+document.querySelectorAll(".qcard").forEach(card=>{
+ card.querySelectorAll(".option").forEach(opt=>opt.addEventListener("click",()=>{
+   if(card.dataset.done==="1")return;
+   card.dataset.done="1";
+   const correct=opt.dataset.c==="1";
+   card.querySelectorAll(".option").forEach(o=>{o.disabled=true;if(o.dataset.c==="1")o.classList.add("correct")});
+   if(!correct)opt.classList.add("wrong"); else correctAnswered.add(card.dataset.q);
+   card.querySelector(".feedback").classList.add("show");
+   document.getElementById("score").textContent=correctAnswered.size;
+ }));
+});
+document.getElementById("checkMatch").addEventListener("click",()=>{
+ const sels=[...document.querySelectorAll(".matchitem select")];
+ const hits=sels.filter(s=>s.value===s.dataset.answer).length;
+ document.getElementById("matchFeedback").textContent=`${hits} de ${sels.length} relaciones correctas. ${hits===sels.length?"Excelente: conectaste las preguntas con la evidencia adecuada.":"Revisa las fichas científicas y vuelve a intentarlo."}`;
+});
+document.querySelectorAll(".case button").forEach(btn=>btn.addEventListener("click",()=>{
+ const a=btn.nextElementSibling; const open=a.classList.toggle("open"); btn.textContent=open?"Ocultar análisis":"Analizar caso";
+}));
+</script>
+</body>
+</html>
